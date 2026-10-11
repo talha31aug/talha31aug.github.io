@@ -9,362 +9,393 @@
   <meta property="og:description" content="Custom Shopify apps, product builders, WordPress plugins and Laravel back ends.">
   <meta property="og:image" content="https://talha31aug.github.io/assets/img/og-image.jpg">
   <meta property="og:type" content="website">
+  <meta name="theme-color" content="#07061a">
   <link rel="icon" href="assets/img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #08071a; --bg2: #110e2c; --card: rgba(255,255,255,.05); --line: rgba(255,255,255,.12);
-      --text: #f4f3ff; --muted: rgba(244,243,255,.7); --accent: #a596ff; --accent2: #5b3df5;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: Inter, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
-    .wrap { width: min(1180px, 100% - 40px); margin: 0 auto; }
-    section { padding: 110px 0; position: relative; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
-    .eyebrow::before { content: ''; width: 28px; height: 3px; border-radius: 2px; background: var(--accent); }
-    h2 { font-size: clamp(32px, 4vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: -1px; margin-top: 14px; }
-    h2 span, h1 span { color: var(--accent); }
-    .lead { color: var(--muted); font-size: 18px; max-width: 640px; margin-top: 16px; }
-    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 26px; border-radius: 999px; font-weight: 700; font-size: 16px; transition: transform .2s, box-shadow .2s; }
-    .btn-primary { background: var(--accent); color: #0b0a24; box-shadow: 0 12px 30px rgba(165,150,255,.3); }
-    .btn-ghost { border: 1px solid var(--line); background: var(--card); }
-    .btn:hover { transform: translateY(-2px); }
+    :root{--bg:#07061a;--bg2:#0e0c26;--card:rgba(255,255,255,.045);--card2:rgba(255,255,255,.07);--line:rgba(255,255,255,.1);--line2:rgba(255,255,255,.18);
+      --text:#f5f4ff;--muted:rgba(245,244,255,.66);--a1:#a596ff;--a2:#6d4dff;--a3:#38bdf8;--gold:#ffc53d}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .wrap{width:min(1200px,100% - 40px);margin:0 auto}
+    h1,h2,h3,.display{font-family:Sora,Inter,sans-serif;letter-spacing:-.02em}
+    .grad{background:linear-gradient(100deg,#c9bfff 0%,var(--a1) 35%,var(--a3) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+    /* background */
+    .bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+    .blob{position:absolute;border-radius:50%;filter:blur(110px);opacity:.55;animation:float 18s ease-in-out infinite alternate}
+    .b1{width:620px;height:620px;background:var(--a2);top:-180px;right:-120px}
+    .b2{width:520px;height:520px;background:#0b6fa8;bottom:-200px;left:-160px;animation-delay:-6s;opacity:.35}
+    .b3{width:380px;height:380px;background:#b4329a;top:45%;left:55%;animation-delay:-12s;opacity:.18}
+    @keyframes float{to{transform:translate(60px,40px) scale(1.12)}}
+    .gridbg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+      background-size:60px 60px;mask-image:radial-gradient(ellipse at 50% 0%,#000 10%,transparent 70%)}
+    .noise{position:absolute;inset:0;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
     /* nav */
-    nav { position: fixed; inset: 0 0 auto 0; z-index: 50; backdrop-filter: blur(14px); background: rgba(8,7,26,.7); border-bottom: 1px solid var(--line); }
-    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 70px; }
-    .logo { font-weight: 800; font-size: 20px; letter-spacing: -.5px; }
-    .logo span { color: var(--accent); }
-    .menu { display: flex; gap: 28px; font-size: 15px; color: var(--muted); }
-    .menu a:hover { color: var(--text); }
-    @media (max-width: 860px) { .menu { display: none; } }
+    nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:60;width:min(1200px,100% - 24px);
+      display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 22px;border-radius:999px;
+      background:rgba(14,12,38,.6);backdrop-filter:blur(18px) saturate(140%);border:1px solid var(--line)}
+    .logo{font-family:Sora;font-weight:800;font-size:19px}.logo i{font-style:normal;color:var(--a1)}
+    .menu{display:flex;gap:26px;font-size:14.5px;color:var(--muted)}.menu a:hover{color:var(--text)}
+    .navcta{display:flex;gap:8px}
+    @media(max-width:900px){.menu{display:none}}
+    @media(max-width:520px){.navcta .ghost{display:none}}
+
+    /* buttons */
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:999px;font-weight:600;font-size:15px;transition:transform .25s,box-shadow .25s,background .25s;white-space:nowrap}
+    .btn svg{width:16px;height:16px}
+    .primary{background:linear-gradient(135deg,#b8adff,var(--a2));color:#fff;box-shadow:0 10px 30px rgba(109,77,255,.45),inset 0 1px 0 rgba(255,255,255,.35)}
+    .primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(109,77,255,.6)}
+    .ghost{background:var(--card2);border:1px solid var(--line2)}.ghost:hover{background:rgba(255,255,255,.12)}
+    .sm{padding:10px 18px;font-size:14px}
 
     /* hero */
-    .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 90px; overflow: hidden;
-      background: radial-gradient(900px 700px at 78% 55%, #1c1450 0%, transparent 70%); }
-    .hero::after { content: ''; position: absolute; inset: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-      background-size: 56px 56px; mask-image: radial-gradient(700px 600px at 75% 50%, #000 20%, transparent 80%); }
-    .hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 30px; align-items: end; position: relative; z-index: 1; }
-    h1 { font-size: clamp(42px, 6vw, 76px); line-height: 1.02; font-weight: 800; letter-spacing: -2px; margin-top: 18px; }
-    .hero .lead { font-size: 20px; }
-    .cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
-    .badges { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
-    .badge { padding: 10px 16px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); font-size: 14px; font-weight: 600; }
-    .badge b { color: var(--accent); }
-    .photo { position: relative; align-self: end; }
-    .photo::before { content: ''; position: absolute; left: 50%; top: 45%; width: 110%; aspect-ratio: 1; transform: translate(-50%, -50%);
-      border-radius: 50%; background: radial-gradient(circle, var(--accent2) 0%, transparent 65%); opacity: .8; }
-    .photo img { position: relative; width: 100%; max-width: 470px; margin-left: auto; filter: drop-shadow(0 30px 60px rgba(0,0,0,.6)); }
-    @media (max-width: 860px) { .hero .wrap { grid-template-columns: 1fr; } .photo img { margin: 0 auto; max-width: 340px; } }
+    .hero{min-height:100vh;display:flex;align-items:center;padding:130px 0 60px}
+    .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+    .pill{display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 8px;border-radius:999px;background:var(--card2);border:1px solid var(--line2);font-size:14px;color:var(--muted)}
+    .pill b{background:#22c55e;color:#04140a;font-size:12px;padding:3px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+    .pill b::before{content:'';width:6px;height:6px;border-radius:50%;background:#04140a;animation:pulse 1.6s infinite}
+    @keyframes pulse{50%{opacity:.25}}
+    h1{font-size:clamp(44px,6.4vw,84px);line-height:1;font-weight:800;margin:24px 0 22px}
+    .sub{font-size:clamp(17px,1.6vw,20px);color:var(--muted);max-width:600px}
+    .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+    .trust{display:flex;flex-wrap:wrap;align-items:center;gap:22px;margin-top:40px;color:var(--muted);font-size:14px}
+    .trust .stars{display:flex;gap:2px}
+    .trust strong{color:var(--text)}
+    .visual{position:relative;height:620px}
+    .ring{position:absolute;left:50%;top:50%;width:520px;height:520px;transform:translate(-50%,-46%);border-radius:50%;
+      background:conic-gradient(from 200deg,var(--a2),var(--a3),#b4329a,var(--a2));filter:blur(2px);opacity:.9;animation:spin 20s linear infinite}
+    .ring::after{content:'';position:absolute;inset:3px;border-radius:50%;background:radial-gradient(circle at 50% 40%,#231a63,var(--bg) 70%)}
+    @keyframes spin{to{transform:translate(-50%,-46%) rotate(360deg)}}
+    .me{position:absolute;left:50%;bottom:0;transform:translateX(-50%);height:600px;width:auto;max-width:none;filter:drop-shadow(0 40px 60px rgba(0,0,0,.6));z-index:2}
+    .float{position:absolute;z-index:3;padding:14px 18px;border-radius:18px;background:rgba(18,15,46,.72);backdrop-filter:blur(14px);border:1px solid var(--line2);
+      box-shadow:0 20px 40px rgba(0,0,0,.4);animation:bob 6s ease-in-out infinite}
+    .float small{display:block;color:var(--muted);font-size:12px}
+    .float b{font-family:Sora;font-size:22px}
+    .f1{top:70px;left:0}.f2{top:230px;right:-10px;animation-delay:-2s}.f3{bottom:90px;left:10px;animation-delay:-4s}
+    @keyframes bob{50%{transform:translateY(-12px)}}
+    @media(max-width:960px){.hero .wrap{grid-template-columns:1fr}.visual{height:480px}.me{height:470px}.ring{width:400px;height:400px}}
+    @media(max-width:520px){.f2{right:0}.float b{font-size:18px}.visual{overflow:hidden;height:440px}.ring{width:86vw;height:86vw}.me{height:430px}}
 
-    /* stats */
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: -40px; position: relative; z-index: 2; }
-    .stat { padding: 26px; border-radius: 20px; background: var(--bg2); border: 1px solid var(--line); }
-    .stat b { display: block; font-size: 34px; font-weight: 800; color: var(--accent); }
-    .stat span { color: var(--muted); font-size: 15px; }
-    @media (max-width: 860px) { .stats { grid-template-columns: repeat(2, 1fr); margin-top: 0; } }
+    /* marquee */
+    .marquee{border-block:1px solid var(--line);padding:22px 0;overflow:hidden;background:rgba(255,255,255,.015)}
+    .track{display:flex;gap:56px;width:max-content;animation:scroll 40s linear infinite;color:var(--muted);font-family:Sora;font-weight:600;font-size:19px}
+    .track span{display:inline-flex;align-items:center;gap:56px}.track span::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--a1)}
+    @keyframes scroll{to{transform:translateX(-50%)}}
+
+    /* sections */
+    section{padding:120px 0}
+    .head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap;margin-bottom:54px}
+    .kicker{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--a1)}
+    h2{font-size:clamp(34px,4.4vw,56px);line-height:1.05;font-weight:800;margin-top:12px;max-width:760px}
+    .head p{color:var(--muted);max-width:420px}
 
     /* services */
-    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 50px; }
-    @media (max-width: 960px) { .grid3 { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 640px) { .grid3 { grid-template-columns: 1fr; } }
-    .svc { padding: 30px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); transition: border-color .2s, transform .2s; }
-    .svc:hover { border-color: var(--accent); transform: translateY(-4px); }
-    .svc .ic { width: 52px; height: 52px; border-radius: 14px; background: var(--accent); color: #0b0a24; display: grid; place-items: center; font-weight: 800; font-size: 20px; }
-    .svc h3 { font-size: 21px; margin: 20px 0 10px; }
-    .svc p { color: var(--muted); font-size: 15.5px; }
+    .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media(max-width:960px){.svc{grid-template-columns:1fr 1fr}}@media(max-width:620px){.svc{grid-template-columns:1fr}}
+    .card{position:relative;padding:30px;border-radius:24px;background:var(--card);border:1px solid var(--line);overflow:hidden;transition:transform .35s,border-color .35s}
+    .card::before{content:'';position:absolute;inset:0;background:radial-gradient(400px circle at var(--x,50%) var(--y,0%),rgba(165,150,255,.16),transparent 45%);opacity:0;transition:opacity .35s}
+    .card:hover{transform:translateY(-6px);border-color:var(--line2)}.card:hover::before{opacity:1}
+    .ico{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(165,150,255,.25),rgba(56,189,248,.15));border:1px solid var(--line2)}
+    .ico svg{width:26px;height:26px;stroke:var(--a1)}
+    .card h3{font-size:21px;margin:22px 0 10px}.card p{color:var(--muted);font-size:15px}
 
-    /* work */
-    .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
-    .filters button { cursor: pointer; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); color: var(--muted); font: 600 14px Inter, sans-serif; }
-    .filters button.on { background: var(--accent); color: #0b0a24; border-color: var(--accent); }
-    .work { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 30px; }
-    @media (max-width: 960px) { .work { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 640px) { .work { grid-template-columns: 1fr; } }
-    .item { border-radius: 20px; overflow: hidden; background: var(--bg2); border: 1px solid var(--line); transition: transform .2s, border-color .2s; }
-    .item:hover { transform: translateY(-4px); border-color: var(--accent); }
-    .item img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
-    .item .meta { padding: 18px 20px 22px; }
-    .item h3 { font-size: 18px; }
-    .item p { color: var(--muted); font-size: 14.5px; margin-top: 6px; }
-    .item .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-    .item .tags span { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(165,150,255,.12); color: var(--accent); }
-    .item.feature { grid-column: span 2; display: grid; grid-template-columns: 1.2fr 1fr; }
-    .item.feature img { height: 100%; }
-    .item.feature .meta { padding: 30px; align-self: center; }
-    .item.feature h3 { font-size: 26px; }
-    @media (max-width: 960px) { .item.feature { grid-column: span 2; grid-template-columns: 1fr; } }
-    @media (max-width: 640px) { .item.feature { grid-column: span 1; } }
-    .hide { display: none; }
+    /* work bento */
+    .filters{display:flex;flex-wrap:wrap;gap:8px}
+    .filters button{cursor:pointer;padding:10px 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);font:500 14px Inter,sans-serif;transition:.25s}
+    .filters button.on,.filters button:hover{color:var(--text);border-color:var(--line2);background:var(--card2)}
+    .filters button.on{background:linear-gradient(135deg,#b8adff,var(--a2));color:#fff;border-color:transparent}
+    .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
+    .w{grid-column:span 2;position:relative;border-radius:24px;overflow:hidden;background:var(--bg2);border:1px solid var(--line);transition:transform .4s,border-color .4s}
+    .w.big{grid-column:span 4;grid-row:span 2}.w.wide{grid-column:span 3}
+    .w img{width:100%;height:100%;object-fit:cover;object-position:left top;aspect-ratio:4/3;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+    .w:hover{transform:translateY(-4px);border-color:var(--line2)}.w:hover img{transform:scale(1.05)}
+    .w .ov{position:absolute;inset:auto 0 0 0;padding:70px 22px 20px;background:linear-gradient(transparent,rgba(7,6,26,.92) 55%)}
+    .w h3{font-size:19px}.w.big h3{font-size:30px}
+    .w p{color:var(--muted);font-size:14px;margin-top:4px;max-width:560px}
+    .w.big p{font-size:16px}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+    .tags span{font-size:12px;padding:4px 10px;border-radius:999px;background:rgba(165,150,255,.16);border:1px solid rgba(165,150,255,.3);color:#d8d1ff}
+    .arrow{position:absolute;top:16px;right:16px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:rgba(7,6,26,.6);
+      border:1px solid var(--line2);backdrop-filter:blur(8px);opacity:0;transform:translateY(6px);transition:.35s}
+    .w:hover .arrow{opacity:1;transform:none}.arrow svg{width:18px;height:18px}
+    .hide{display:none!important}
+    @media(max-width:960px){.bento{grid-template-columns:repeat(2,1fr)}.w,.w.wide{grid-column:span 1}.w.big{grid-column:span 2;grid-row:auto}}
+    @media(max-width:620px){.bento{grid-template-columns:1fr}.w,.w.wide,.w.big{grid-column:span 1}.w.big h3{font-size:22px}}
+
+    /* process */
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+    @media(max-width:960px){.steps{grid-template-columns:1fr 1fr}}@media(max-width:620px){.steps{grid-template-columns:1fr}}
+    .step{padding:28px;border-radius:24px;background:var(--card);border:1px solid var(--line);position:relative}
+    .step::before{counter-increment:s;content:'0' counter(s);font-family:Sora;font-weight:800;font-size:44px;line-height:1;
+      background:linear-gradient(180deg,rgba(165,150,255,.9),rgba(165,150,255,.1));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .step h3{font-size:19px;margin:18px 0 8px}.step p{color:var(--muted);font-size:15px}
 
     /* reviews */
-    .reviews { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 50px; }
-    @media (max-width: 960px) { .reviews { grid-template-columns: 1fr; } }
-    .rev { padding: 28px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); }
-    .stars { display: flex; gap: 3px; }
-    .rev p { font-size: 17px; margin: 14px 0; }
-    .rev small { color: var(--muted); }
+    .revs{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media(max-width:960px){.revs{grid-template-columns:1fr}}
+    .rev{padding:32px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line)}
+    .rev .stars{display:flex;gap:3px}
+    .rev blockquote{font-size:18px;line-height:1.55;margin:18px 0 22px}
+    .rev cite{font-style:normal;color:var(--muted);font-size:14px;display:flex;align-items:center;gap:10px}
+    .rev cite::before{content:'';width:22px;height:2px;background:var(--a1)}
 
-    /* experience + stack */
-    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 50px; }
-    @media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
-    .tl { border-left: 2px solid var(--line); padding-left: 26px; }
-    .tl div { position: relative; margin-bottom: 30px; }
-    .tl div::before { content: ''; position: absolute; left: -33px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); }
-    .tl b { display: block; font-size: 18px; }
-    .tl span { color: var(--accent); font-size: 14px; font-weight: 600; }
-    .tl p { color: var(--muted); font-size: 15px; margin-top: 6px; }
-    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
-    .chips span { padding: 9px 15px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); font-size: 14.5px; font-weight: 500; }
-    .stack h3 { font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
-    .stack .chips { margin-bottom: 28px; }
+    /* about */
+    .about{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+    @media(max-width:900px){.about{grid-template-columns:1fr}}
+    .tl{position:relative;padding-left:28px}
+    .tl::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--a1),transparent)}
+    .tl div{position:relative;margin-bottom:30px}
+    .tl div::before{content:'';position:absolute;left:-28px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--a1);box-shadow:0 0 12px var(--a1)}
+    .tl span{font-size:13px;color:var(--a1);font-weight:600}.tl b{display:block;font-size:17px;margin-top:2px}.tl p{color:var(--muted);font-size:15px;margin-top:4px}
+    .stack h4{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+    .chips span{padding:8px 14px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:14px}
+    .agency{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:10px;padding:22px 24px;border-radius:20px;
+      background:linear-gradient(135deg,rgba(109,77,255,.18),rgba(56,189,248,.08));border:1px solid var(--line2)}
+    .agency small{color:var(--muted);display:block;font-size:13px}.agency b{font-family:Sora;font-size:19px}
 
     /* contact */
-    .contact { display: grid; grid-template-columns: .9fr 1.1fr; gap: 50px; align-items: start; }
-    @media (max-width: 860px) { .contact { grid-template-columns: 1fr; } }
-    form { display: grid; gap: 14px; padding: 30px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); }
-    input, textarea, select { width: 100%; padding: 15px 16px; border-radius: 12px; border: 1px solid var(--line); background: rgba(0,0,0,.25); color: var(--text); font: 15px Inter, sans-serif; }
-    textarea { min-height: 150px; resize: vertical; }
-    input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
-    .formmsg { font-size: 14px; color: var(--muted); }
-    .hp { position: absolute; left: -5000px; }
-    footer { padding: 40px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
-    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
+    .contactbox{position:relative;border-radius:32px;padding:56px;overflow:hidden;background:linear-gradient(135deg,#17114a,#0b0a24 60%);border:1px solid var(--line2);
+      display:grid;grid-template-columns:.9fr 1.1fr;gap:50px}
+    .contactbox::before{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:var(--a2);filter:blur(120px);opacity:.35;top:-200px;left:-150px}
+    .contactbox>*{position:relative}
+    @media(max-width:900px){.contactbox{grid-template-columns:1fr;padding:32px}}
+    form{display:grid;gap:12px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:620px){.row{grid-template-columns:1fr}}
+    input,textarea,select{width:100%;padding:15px 16px;border-radius:14px;border:1px solid var(--line2);background:rgba(7,6,26,.55);color:var(--text);font:15px Inter,sans-serif;transition:border-color .2s}
+    select option{background:#0e0c26}
+    textarea{min-height:140px;resize:vertical}
+    input:focus,textarea:focus,select:focus{outline:none;border-color:var(--a1);box-shadow:0 0 0 4px rgba(165,150,255,.15)}
+    .hp{position:absolute;left:-5000px}
+    .formmsg{font-size:14px;color:var(--muted);min-height:20px}
+    .points{margin-top:28px;display:grid;gap:14px}
+    .points div{display:flex;gap:12px;align-items:center;color:var(--muted)}
+    .points svg{width:20px;height:20px;stroke:#22c55e;flex:none}
+
+    footer{padding:50px 0 40px;color:var(--muted);font-size:14px}
+    footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:30px}
+    footer nav{position:static;transform:none;width:auto;padding:0;background:none;border:0;backdrop-filter:none;display:flex;gap:20px}
+    footer a:hover{color:var(--text)}
+
+    /* reveal */
+    .rv{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+    .rv.in{opacity:1;transform:none}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important}.rv{opacity:1;transform:none}}
   </style>
 </head>
 <body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="gridbg"></div><div class="noise"></div></div>
 
 <nav>
-  <div class="wrap">
-    <a class="logo" href="#top">Talha<span>.</span></a>
-    <div class="menu">
-      <a href="#services">Services</a><a href="#work">Work</a><a href="#reviews">Reviews</a><a href="#experience">Experience</a><a href="#contact">Contact</a>
-    </div>
-    <a class="btn btn-primary" style="padding:10px 18px;font-size:14px" href="https://www.upwork.com/freelancers/~01e3dbf20fefc70246" target="_blank" rel="noopener">Hire me on Upwork</a>
+  <a class="logo" href="#top">Talha<i>.</i></a>
+  <div class="menu"><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#about">About</a></div>
+  <div class="navcta">
+    <a class="btn ghost sm" href="https://pharossolutions.org/" target="_blank" rel="noopener">Pharos Solutions</a>
+    <a class="btn primary sm" href="#contact">Let's talk</a>
   </div>
 </nav>
 
 <header class="hero" id="top">
   <div class="wrap">
     <div>
-      <div class="eyebrow">Shopify and WordPress Developer</div>
-      <h1>I build the features a theme <span>alone can't do.</span></h1>
-      <p class="lead">Custom Shopify apps, product builders, WordPress plugins and Laravel back ends that tie it all together. 6+ years building stores, web apps and funnels for brands, startups and agencies.</p>
-      <div class="cta">
-        <a class="btn btn-primary" href="#contact">Start a project</a>
-        <a class="btn btn-ghost" href="#work">See my work</a>
+      <div class="pill rv"><b>Available</b> Taking new projects this month</div>
+      <h1 class="rv">I build the features a theme <span class="grad">alone can't do.</span></h1>
+      <p class="sub rv">Senior Shopify and WordPress developer. Custom Shopify apps, product builders, WordPress plugins and Laravel back ends for brands, startups and agencies.</p>
+      <div class="cta rv">
+        <a class="btn primary" href="#contact">Start a project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+        <a class="btn ghost" href="#work">View my work</a>
       </div>
-      <div class="badges">
-        <div class="badge"><b>Top Rated</b> on Upwork</div>
-        <div class="badge"><b>100%</b> Job Success</div>
-        <div class="badge">Replies within <b>a few hours</b></div>
+      <div class="trust rv">
+        <span class="stars" id="stars-hero"></span>
+        <span><strong>Top Rated</strong> on Upwork</span>
+        <span><strong>100%</strong> Job Success</span>
+        <span><strong>6+</strong> years</span>
       </div>
     </div>
-    <div class="photo"><img src="assets/img/talha.webp" alt="Talha Zahid" width="500" height="582"></div>
+    <div class="visual rv">
+      <div class="ring"></div>
+      <img class="me" src="assets/img/talha.webp" alt="Talha Zahid" width="500" height="582">
+      <div class="float f1"><small>B2B platform built</small><b>52 accounts</b></div>
+      <div class="float f2"><small>Job Success Score</small><b class="grad">100%</b></div>
+      <div class="float f3"><small>Hours on Upwork</small><b>950+</b></div>
+    </div>
   </div>
 </header>
 
-<div class="wrap">
-  <div class="stats">
-    <div class="stat"><b>6+</b><span>years of experience</span></div>
-    <div class="stat"><b>100%</b><span>Job Success Score</span></div>
-    <div class="stat"><b>950+</b><span>hours on Upwork</span></div>
-    <div class="stat"><b>52</b><span>B2B accounts on a platform I built</span></div>
-  </div>
-</div>
+<div class="marquee"><div class="track">
+  <span>Shopify Plus</span><span>Liquid</span><span>Laravel</span><span>WordPress</span><span>WooCommerce</span><span>React</span><span>Node.js</span><span>GoHighLevel</span><span>Stripe</span><span>REST APIs</span><span>MySQL</span><span>Elementor</span><span>Bricks</span>
+  <span>Shopify Plus</span><span>Liquid</span><span>Laravel</span><span>WordPress</span><span>WooCommerce</span><span>React</span><span>Node.js</span><span>GoHighLevel</span><span>Stripe</span><span>REST APIs</span><span>MySQL</span><span>Elementor</span><span>Bricks</span>
+</div></div>
 
 <section id="services">
   <div class="wrap">
-    <div class="eyebrow">Services</div>
-    <h2>What I can <span>build for you</span></h2>
-    <p class="lead">From one custom section to a full multi-portal platform. Clean code you can maintain, tested on desktop and mobile.</p>
-    <div class="grid3">
-      <div class="svc"><div class="ic">01</div><h3>Custom Shopify apps</h3><p>Private apps and B2B portals with a Laravel back end, running inside your Shopify store through App Proxy.</p></div>
-      <div class="svc"><div class="ic">02</div><h3>Product builders</h3><p>Step-by-step product customizers with options, add-ons and live price, with every choice saved on the order.</p></div>
-      <div class="svc"><div class="ic">03</div><h3>Shopify stores and themes</h3><p>Store builds, redesigns and custom OS 2.0 sections in Liquid that you can edit in the theme editor.</p></div>
-      <div class="svc"><div class="ic">04</div><h3>WordPress and WooCommerce</h3><p>Custom plugins and themes with Elementor or Bricks, WooCommerce, API and CRM integrations, security cleanup.</p></div>
-      <div class="svc"><div class="ic">05</div><h3>Laravel web apps</h3><p>Dashboards, portals and REST APIs with role-based access, payments and integrations, built from scratch.</p></div>
-      <div class="svc"><div class="ic">06</div><h3>GoHighLevel</h3><p>Funnels, automations and CRM pipelines, plus migrations from Kajabi and WordPress with forms that keep working.</p></div>
+    <div class="head rv"><div><div class="kicker">Services</div><h2>What I can <span class="grad">build for you</span></h2></div>
+      <p>From one custom section to a full multi-portal platform. Clean code you can maintain, tested on desktop and mobile.</p></div>
+    <div class="svc">
+      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M17.5 14v7M14 17.5h7"/></svg></div>
+        <h3>Custom Shopify apps</h3><p>Private apps and B2B portals with a Laravel back end, running inside your store through App Proxy.</p></div>
+      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></div>
+        <h3>Product builders</h3><p>Step-by-step customizers with options, add-ons and live price, with every choice saved on the order.</p></div>
+      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg></div>
+        <h3>Shopify stores and themes</h3><p>Store builds, redesigns and custom OS 2.0 sections in Liquid, editable in the theme editor.</p></div>
+      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
+        <h3>WordPress and WooCommerce</h3><p>Custom plugins and themes with Elementor or Bricks, WooCommerce, API and CRM integrations.</p></div>
+      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg></div>
+        <h3>Laravel web apps</h3><p>Dashboards, portals and REST APIs with role-based access, payments and integrations, built from scratch.</p></div>
+      <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg></div>
+        <h3>GoHighLevel</h3><p>Funnels, automations and CRM pipelines, plus migrations from Kajabi and WordPress that keep forms working.</p></div>
     </div>
   </div>
 </section>
 
-<section id="work" style="background:linear-gradient(180deg,transparent,#0d0b24 30%,#0d0b24 70%,transparent)">
+<section id="work">
   <div class="wrap">
-    <div class="eyebrow">Selected work</div>
-    <h2>Real projects, <span>live today</span></h2>
-    <div class="filters">
-      <button class="on" data-f="all">All</button>
-      <button data-f="custom">Custom apps</button>
-      <button data-f="shopify">Shopify</button>
-      <button data-f="wordpress">WordPress</button>
-      <button data-f="ghl">GoHighLevel</button>
+    <div class="head rv"><div><div class="kicker">Selected work</div><h2>Real projects, <span class="grad">live today</span></h2></div>
+      <div class="filters"><button class="on" data-f="all">All</button><button data-f="custom">Custom apps</button><button data-f="shopify">Shopify</button><button data-f="wordpress">WordPress</button><button data-f="ghl">GoHighLevel</button></div></div>
+    <div class="bento">
+      <a class="w big rv" data-c="custom shopify" href="https://plewstyres.com/" target="_blank" rel="noopener"><img src="assets/img/work/plews-shot.webp" alt="Plews Tyres B2B wholesale platform" loading="lazy">
+        <div class="ov"><h3>Plews Tyres B2B Wholesale Platform</h3><p>A custom Shopify app with a Laravel back end and three portals. Trade customers order full containers inside the store, staff verify payments and issue purchase orders, and the factory uploads shipping papers. 52 B2B accounts, 43 container orders.</p>
+        <div class="tags"><span>Shopify App Proxy</span><span>Laravel</span><span>3 portals</span></div></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="custom" href="https://pixelpilotppl.co.uk/" target="_blank" rel="noopener"><img src="assets/img/work/pixel-pilot-shot.webp" alt="Pixel Pilot custom web app" loading="lazy">
+        <div class="ov"><h3>Pixel Pilot</h3><p>Pixel grid, Stripe checkout, admin panel.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="shopify custom" href="https://www.byobwigbar.com/pages/wig-customization-bar" target="_blank" rel="noopener"><img src="assets/img/work/byob-shot.webp" alt="BYOB wig customizer" loading="lazy">
+        <div class="ov"><h3>Wig Customizer</h3><p>Build-your-own Shopify product builder.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w wide rv" data-c="ghl" href="https://foundingfathersfranchise.com/" target="_blank" rel="noopener"><img src="assets/img/work/founding-fathers-shot.webp" alt="Founding Fathers GoHighLevel" loading="lazy">
+        <div class="ov"><h3>Founding Fathers</h3><p>GoHighLevel funnels and a Kajabi and WordPress migration.</p><div class="tags"><span>GoHighLevel</span><span>Migration</span></div></div><span class="arrow">ARROW</span></a>
+      <a class="w wide rv" data-c="shopify custom" href="https://www.costaspetaccessories.com/products/charms-leash" target="_blank" rel="noopener"><img src="assets/img/work/costas-pet-shot.webp" alt="Costas Pet charm leash builder" loading="lazy">
+        <div class="ov"><h3>Charm Leash Builder</h3><p>Pick a colour, add letter charms, live price.</p><div class="tags"><span>Shopify</span><span>Product builder</span></div></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="custom" href="https://kaisersign.com/" target="_blank" rel="noopener"><img src="assets/img/work/kaiser-sign-shot.webp" alt="Kaiser Sign" loading="lazy"><div class="ov"><h3>Kaiser Sign</h3><p>Web-to-print store with instant pricing.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="shopify" href="https://embrlabs.com" target="_blank" rel="noopener"><img src="assets/img/work/embr-labs-shot.webp" alt="Embr Labs" loading="lazy"><div class="ov"><h3>Embr Labs</h3><p>DTC store, featured in WIRED and WSJ.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="shopify" href="https://jpsports.ca/" target="_blank" rel="noopener"><img src="assets/img/work/jp-sports-shot.webp" alt="JP Sports" loading="lazy"><div class="ov"><h3>JP Sports</h3><p>Combat sports store, large catalog.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="shopify" href="https://www.nbtclothing.com" target="_blank" rel="noopener"><img src="assets/img/work/nbt-clothing-shot.webp" alt="NBT Clothing" loading="lazy"><div class="ov"><h3>NBT Clothing</h3><p>Protective riding apparel store.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="shopify" href="https://decordream.co.il/" target="_blank" rel="noopener"><img src="assets/img/work/decor-dream-shot.webp" alt="Decor Dream" loading="lazy"><div class="ov"><h3>Decor Dream</h3><p>Hebrew right-to-left jewelry store.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="shopify" href="https://klevercase.com/" target="_blank" rel="noopener"><img src="assets/img/work/klever-case-shot.webp" alt="Klever Case" loading="lazy"><div class="ov"><h3>Klever Case</h3><p>Kindle cases and gifts for readers.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="shopify" href="https://www.therugrepublic.in/" target="_blank" rel="noopener"><img src="assets/img/work/rug-republic-shot.webp" alt="The Rug Republic" loading="lazy"><div class="ov"><h3>The Rug Republic</h3><p>Home decor store, long-term client.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="wordpress" href="https://fliplok.com/" target="_blank" rel="noopener"><img src="assets/img/work/fliplok-shot.webp" alt="FlipLok" loading="lazy"><div class="ov"><h3>FlipLok</h3><p>WordPress site for a door lock brand.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="wordpress" href="https://aslflurry.com/" target="_blank" rel="noopener"><img src="assets/img/work/asl-flurry-shot.webp" alt="ASL Flurry" loading="lazy"><div class="ov"><h3>ASL Flurry</h3><p>WordPress site for a learning app.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w rv" data-c="wordpress" href="https://www.routemagic.app/" target="_blank" rel="noopener"><img src="assets/img/work/routemagic-shot.webp" alt="RouteMagic" loading="lazy"><div class="ov"><h3>RouteMagic</h3><p>SaaS site built with Bricks.</p></div><span class="arrow">ARROW</span></a>
+      <a class="w wide rv" data-c="wordpress" href="https://appmakersla.com/" target="_blank" rel="noopener"><img src="assets/img/work/appmakers-shot.webp" alt="AppMakers" loading="lazy"><div class="ov"><h3>AppMakers</h3><p>Agency website, built and still maintained.</p></div><span class="arrow">ARROW</span></a>
     </div>
-    <div class="work">
-      <a class="item feature" data-c="custom shopify" href="https://plewstyres.com/" target="_blank" rel="noopener">
-        <img src="assets/img/work/plews.webp" alt="Plews Tyres B2B wholesale platform" loading="lazy">
-        <div class="meta"><h3>Plews Tyres B2B Wholesale Platform</h3>
-          <p>A British motocross tyre brand sells wholesale by the container. I built a custom Shopify app with a Laravel back end and three portals: trade customers order inside the store with live container volume and pay a deposit, staff verify payments and issue purchase orders, and the factory confirms ready dates and uploads shipping papers. 52 B2B accounts, 79 products, 43 container orders.</p>
-          <div class="tags"><span>Shopify App Proxy</span><span>Laravel</span><span>MySQL</span><span>3 portals</span></div></div>
-      </a>
-      <a class="item" data-c="custom" href="https://pixelpilotppl.co.uk/" target="_blank" rel="noopener">
-        <img src="assets/img/work/pixel-pilot.webp" alt="Pixel Pilot custom web app" loading="lazy">
-        <div class="meta"><h3>Pixel Pilot</h3><p>A 10,000 pixel sponsorship grid with Stripe checkout, boarding pass receipts and an admin moderation panel.</p>
-          <div class="tags"><span>Web app</span><span>Stripe</span></div></div>
-      </a>
-      <a class="item" data-c="shopify custom" href="https://www.byobwigbar.com/pages/wig-customization-bar" target="_blank" rel="noopener">
-        <img src="assets/img/work/byob.webp" alt="BYOB build your own wig customizer" loading="lazy">
-        <div class="meta"><h3>Build-Your-Own Wig Customizer</h3><p>A step-by-step Shopify product builder for bundles, styling, colour and shipping options.</p>
-          <div class="tags"><span>Shopify</span><span>Liquid</span><span>JavaScript</span></div></div>
-      </a>
-      <a class="item" data-c="shopify custom" href="https://www.costaspetaccessories.com/products/charms-leash" target="_blank" rel="noopener">
-        <img src="assets/img/work/costas-pet.webp" alt="Costas Pet charm leash builder" loading="lazy">
-        <div class="meta"><h3>Custom Charm Leash Builder</h3><p>Customers pick a leash colour and add letter charms, with the price updating as they build.</p>
-          <div class="tags"><span>Shopify</span><span>Product builder</span></div></div>
-      </a>
-      <a class="item" data-c="ghl" href="https://foundingfathersfranchise.com/" target="_blank" rel="noopener">
-        <img src="assets/img/work/founding-fathers.webp" alt="Founding Fathers GoHighLevel funnels" loading="lazy">
-        <div class="meta"><h3>Founding Fathers</h3><p>GoHighLevel funnels and a Kajabi and WordPress to GoHighLevel migration for a real estate franchise.</p>
-          <div class="tags"><span>GoHighLevel</span><span>Funnels</span><span>Migration</span></div></div>
-      </a>
-      <a class="item" data-c="custom" href="https://kaisersign.com/" target="_blank" rel="noopener">
-        <img src="assets/img/work/kaiser-sign.webp" alt="Kaiser Sign web to print store" loading="lazy">
-        <div class="meta"><h3>Kaiser Sign</h3><p>A web-to-print sign store with online design and instant pricing.</p>
-          <div class="tags"><span>Web-to-print</span><span>Ecommerce</span></div></div>
-      </a>
-      <a class="item" data-c="shopify" href="https://embrlabs.com" target="_blank" rel="noopener">
-        <img src="assets/img/work/embr-labs.webp" alt="Embr Labs Shopify store" loading="lazy">
-        <div class="meta"><h3>Embr Wave by Embr Labs</h3><p>Shopify store for a wellness device featured in WIRED and the Wall Street Journal.</p>
-          <div class="tags"><span>Shopify</span><span>DTC</span></div></div>
-      </a>
-      <a class="item" data-c="shopify" href="https://jpsports.ca/" target="_blank" rel="noopener">
-        <img src="assets/img/work/jp-sports.webp" alt="JP Sports Shopify store" loading="lazy">
-        <div class="meta"><h3>JP Sports</h3><p>Shopify store for a Canadian combat sports retailer with a large catalog.</p>
-          <div class="tags"><span>Shopify</span><span>Large catalog</span></div></div>
-      </a>
-      <a class="item" data-c="shopify" href="https://www.nbtclothing.com" target="_blank" rel="noopener">
-        <img src="assets/img/work/nbt-clothing.webp" alt="NBT Clothing Shopify store" loading="lazy">
-        <div class="meta"><h3>NBT Clothing</h3><p>Shopify fashion store for a protective riding apparel brand.</p>
-          <div class="tags"><span>Shopify</span><span>Fashion</span></div></div>
-      </a>
-      <a class="item" data-c="shopify" href="https://decordream.co.il/" target="_blank" rel="noopener">
-        <img src="assets/img/work/decor-dream.webp" alt="Decor Dream Hebrew right to left Shopify store" loading="lazy">
-        <div class="meta"><h3>Decor Dream</h3><p>A Hebrew, right-to-left Shopify jewelry store.</p>
-          <div class="tags"><span>Shopify</span><span>RTL</span></div></div>
-      </a>
-      <a class="item" data-c="shopify" href="https://klevercase.com/" target="_blank" rel="noopener">
-        <img src="assets/img/work/klever-case.webp" alt="Klever Case Shopify store" loading="lazy">
-        <div class="meta"><h3>Klever Case</h3><p>Shopify store for book-style Kindle cases and gifts for readers.</p>
-          <div class="tags"><span>Shopify</span></div></div>
-      </a>
-      <a class="item" data-c="shopify" href="https://www.therugrepublic.in/" target="_blank" rel="noopener">
-        <img src="assets/img/work/rug-republic.webp" alt="The Rug Republic Shopify store" loading="lazy">
-        <div class="meta"><h3>The Rug Republic</h3><p>Shopify home decor store, a long-term client.</p>
-          <div class="tags"><span>Shopify</span><span>Ongoing</span></div></div>
-      </a>
-      <a class="item" data-c="wordpress" href="https://fliplok.com/" target="_blank" rel="noopener">
-        <img src="assets/img/work/fliplok.webp" alt="FlipLok WordPress website" loading="lazy">
-        <div class="meta"><h3>FlipLok</h3><p>Custom WordPress website for a keyless door lock brand.</p>
-          <div class="tags"><span>WordPress</span></div></div>
-      </a>
-      <a class="item" data-c="wordpress" href="https://aslflurry.com/" target="_blank" rel="noopener">
-        <img src="assets/img/work/asl-flurry.webp" alt="ASL Flurry WordPress website" loading="lazy">
-        <div class="meta"><h3>ASL Flurry</h3><p>WordPress website for an American Sign Language learning app.</p>
-          <div class="tags"><span>WordPress</span></div></div>
-      </a>
-      <a class="item" data-c="wordpress" href="https://www.routemagic.app/" target="_blank" rel="noopener">
-        <img src="assets/img/work/routemagic.webp" alt="RouteMagic WordPress website" loading="lazy">
-        <div class="meta"><h3>RouteMagic</h3><p>SaaS marketing website built with WordPress and the Bricks builder.</p>
-          <div class="tags"><span>WordPress</span><span>Bricks</span></div></div>
-      </a>
-      <a class="item" data-c="wordpress" href="https://appmakersla.com/" target="_blank" rel="noopener">
-        <img src="assets/img/work/appmakers.webp" alt="AppMakers WordPress website" loading="lazy">
-        <div class="meta"><h3>AppMakers</h3><p>WordPress website for a mobile app agency, built and still maintained.</p>
-          <div class="tags"><span>WordPress</span><span>Maintenance</span></div></div>
-      </a>
+  </div>
+</section>
+
+<section id="process">
+  <div class="wrap">
+    <div class="head rv"><div><div class="kicker">How I work</div><h2>A clear process, <span class="grad">no surprises</span></h2></div>
+      <p>You always know what is being built, when it will be ready and what it costs.</p></div>
+    <div class="steps">
+      <div class="step rv"><h3>Plan</h3><p>We agree the goal, scope and timeline. You get a written plan and estimate before any code is written.</p></div>
+      <div class="step rv"><h3>Build</h3><p>I build in clear milestones and share progress you can test along the way.</p></div>
+      <div class="step rv"><h3>Test</h3><p>Every page and flow is tested on desktop and mobile, and you review it on a staging copy.</p></div>
+      <div class="step rv"><h3>Launch and support</h3><p>I put it live, show you how to manage it, and stay available for fixes after launch.</p></div>
     </div>
   </div>
 </section>
 
 <section id="reviews">
   <div class="wrap">
-    <div class="eyebrow">Client reviews</div>
-    <h2>What clients <span>say on Upwork</span></h2>
-    <div class="reviews">
-      <div class="rev"><div class="stars" aria-label="5 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg></div><p>"He built the full Pixel Pilot website from scratch, including a pixel grid, Stripe checkout, boarding pass receipt and admin moderation panel."</p><small>Web site development for PPL funding</small></div>
-      <div class="rev"><div class="stars" aria-label="5 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg></div><p>"Understood the Shopify Liquid requirements quickly. The code was clean, responsive, and easy to manage."</p><small>Shopify Liquid dynamic theme section</small></div>
-      <div class="rev"><div class="stars" aria-label="5 stars"><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg></div><p>"Excellent job integrating our custom contact form with the CRM API, with proper data formatting and error handling."</p><small>WordPress form to CRM webhook</small></div>
+    <div class="head rv"><div><div class="kicker">Client reviews</div><h2>What clients <span class="grad">say on Upwork</span></h2></div></div>
+    <div class="revs">
+      <div class="rev rv"><div class="stars"></div><blockquote>"He built the full Pixel Pilot website from scratch, including a pixel grid, Stripe checkout, boarding pass receipt and admin moderation panel."</blockquote><cite>Web site development for PPL funding</cite></div>
+      <div class="rev rv"><div class="stars"></div><blockquote>"Understood the Shopify Liquid requirements quickly. The code was clean, responsive, and easy to manage."</blockquote><cite>Shopify Liquid dynamic theme section</cite></div>
+      <div class="rev rv"><div class="stars"></div><blockquote>"Excellent job integrating our custom contact form with the CRM API, with proper data formatting and error handling."</blockquote><cite>WordPress form to CRM webhook</cite></div>
     </div>
   </div>
 </section>
 
-<section id="experience">
+<section id="about">
   <div class="wrap">
-    <div class="eyebrow">Experience</div>
-    <h2>Background and <span>tech stack</span></h2>
-    <div class="two">
-      <div class="tl">
-        <div><span>Sep 2020 - Present</span><b>Senior Full Stack Developer, Digital Kalakari</b><p>Project-based work on Shopify, WordPress and Laravel: client sites, web apps, API and payment integrations.</p></div>
-        <div><span>Oct 2021 - 2025</span><b>Senior Website Developer, Dynamasstech</b><p>Built and maintained responsive websites and ecommerce stores for clients.</p></div>
-        <div><span>Jul 2019 - Mar 2020</span><b>Website Developer, Brahimfords</b><p>Developed and maintained company websites and new features.</p></div>
-        <div><span>2015 - 2019</span><b>MSc Information Technology</b><p>University of Agriculture, Faisalabad.</p></div>
+    <div class="head rv"><div><div class="kicker">About</div><h2>Experience and <span class="grad">tech stack</span></h2></div></div>
+    <div class="about">
+      <div class="rv">
+        <div class="tl">
+          <div><span>Sep 2020 - Present</span><b>Senior Full Stack Developer, Digital Kalakari</b><p>Project-based Shopify, WordPress and Laravel work: client sites, web apps, API and payment integrations.</p></div>
+          <div><span>Oct 2021 - 2025</span><b>Senior Website Developer, Dynamasstech</b><p>Built and maintained responsive websites and ecommerce stores.</p></div>
+          <div><span>Jul 2019 - Mar 2020</span><b>Website Developer, Brahimfords</b><p>Developed and maintained company websites and features.</p></div>
+          <div><span>2015 - 2019</span><b>MSc Information Technology</b><p>University of Agriculture, Faisalabad.</p></div>
+        </div>
+        <a class="agency" href="https://pharossolutions.org/" target="_blank" rel="noopener">
+          <div><small>Need a team for a bigger project?</small><b>Pharos Solutions</b></div>
+          <span class="btn ghost sm">Visit website</span></a>
       </div>
-      <div class="stack">
-        <h3>Shopify</h3><div class="chips"><span>Shopify Plus</span><span>Liquid</span><span>OS 2.0 sections</span><span>App Proxy</span><span>Custom apps</span></div>
-        <h3>WordPress</h3><div class="chips"><span>Custom plugins</span><span>WooCommerce</span><span>Elementor</span><span>Bricks</span></div>
-        <h3>Full stack</h3><div class="chips"><span>Laravel</span><span>PHP</span><span>MySQL</span><span>JavaScript</span><span>React</span><span>REST APIs</span><span>Stripe</span></div>
-        <h3>Funnels and more</h3><div class="chips"><span>GoHighLevel</span><span>Kajabi</span><span>Webflow</span><span>Wix</span><span>Squarespace</span><span>Core Web Vitals</span></div>
+      <div class="stack rv">
+        <h4>Shopify</h4><div class="chips"><span>Shopify Plus</span><span>Liquid</span><span>OS 2.0 sections</span><span>App Proxy</span><span>Custom apps</span></div>
+        <h4>WordPress</h4><div class="chips"><span>Custom plugins</span><span>WooCommerce</span><span>Elementor</span><span>Bricks</span></div>
+        <h4>Full stack</h4><div class="chips"><span>Laravel</span><span>PHP</span><span>MySQL</span><span>JavaScript</span><span>React</span><span>Node.js</span><span>REST APIs</span><span>Stripe</span></div>
+        <h4>Funnels and more</h4><div class="chips"><span>GoHighLevel</span><span>Kajabi</span><span>Webflow</span><span>Wix</span><span>Squarespace</span><span>Core Web Vitals</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="contact" style="background:radial-gradient(800px 500px at 20% 60%, #1c1450 0%, transparent 70%)">
-  <div class="wrap contact">
-    <div>
-      <div class="eyebrow">Contact</div>
-      <h2>Tell me what you want to <span>build or fix</span></h2>
-      <p class="lead">Share your goal and your store or site link. I will reply with how I would approach it and a realistic estimate.</p>
-      <div class="cta"><a class="btn btn-ghost" href="https://www.upwork.com/freelancers/~01e3dbf20fefc70246" target="_blank" rel="noopener">Or hire me on Upwork</a></div>
+<section id="contact" style="padding-top:40px">
+  <div class="wrap">
+    <div class="contactbox rv">
+      <div>
+        <div class="kicker">Contact</div>
+        <h2 style="font-size:clamp(32px,3.6vw,46px)">Tell me what you want to <span class="grad">build or fix</span></h2>
+        <p class="sub" style="margin-top:16px">Share your goal and your store or site link. I will reply with how I would approach it and a realistic estimate.</p>
+        <div class="points">
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Reply within a few hours</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Clear plan and fixed estimate</div>
+          <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>Prefer Upwork? <a href="https://www.upwork.com/freelancers/~01e3dbf20fefc70246" target="_blank" rel="noopener" style="color:var(--a1);font-weight:600">&nbsp;Hire me there</a></div>
+        </div>
+      </div>
+      <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="72a3ad09-d98c-482a-8989-5e0bbf7f188b">
+        <input type="hidden" name="subject" value="New enquiry from talha31aug.github.io">
+        <input type="hidden" name="from_name" value="Portfolio website">
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+        <div class="row"><input name="name" placeholder="Your name" required><input name="email" type="email" placeholder="Your email" required></div>
+        <div class="row">
+          <select name="service"><option>Custom Shopify app or B2B portal</option><option>Product builder</option><option>Shopify store or theme</option><option>WordPress or WooCommerce</option><option>Laravel web app</option><option>GoHighLevel</option><option>Something else</option></select>
+          <select name="budget"><option>Budget: not sure yet</option><option>Under $500</option><option>$500 to $2,000</option><option>$2,000 to $5,000</option><option>$5,000+</option></select>
+        </div>
+        <input name="website" placeholder="Store or website link (optional)">
+        <textarea name="message" placeholder="What do you want to build or fix?" required></textarea>
+        <button class="btn primary" type="submit" style="border:0;cursor:pointer;justify-content:center">Send message <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+        <div class="formmsg" id="formmsg"></div>
+      </form>
     </div>
-    <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="WEB3FORMS_ACCESS_KEY">
-      <input type="hidden" name="subject" value="New enquiry from talha31aug.github.io">
-      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
-      <input name="name" placeholder="Your name" required>
-      <input name="email" type="email" placeholder="Your email" required>
-      <select name="service">
-        <option>Custom Shopify app or B2B portal</option><option>Product builder</option><option>Shopify store or theme</option>
-        <option>WordPress or WooCommerce</option><option>Laravel web app</option><option>GoHighLevel</option><option>Something else</option>
-      </select>
-      <input name="website" placeholder="Store or website link (optional)">
-      <textarea name="message" placeholder="What do you want to build or fix?" required></textarea>
-      <button class="btn btn-primary" type="submit" style="border:0;cursor:pointer;justify-content:center">Send message</button>
-      <div class="formmsg" id="formmsg"></div>
-    </form>
   </div>
 </section>
 
 <footer>
-  <div class="wrap"><span>Talha Zahid | Shopify and WordPress Developer</span><a href="https://www.upwork.com/freelancers/~01e3dbf20fefc70246" target="_blank" rel="noopener">Upwork profile</a></div>
+  <div class="wrap">
+    <span>Talha Zahid | Shopify and WordPress Developer</span>
+    <nav><a href="https://www.upwork.com/freelancers/~01e3dbf20fefc70246" target="_blank" rel="noopener">Upwork</a><a href="https://pharossolutions.org/" target="_blank" rel="noopener">Pharos Solutions</a><a href="#top">Back to top</a></nav>
+  </div>
 </footer>
 
 <script>
+  var STAR = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#FFC53D"><polygon points="12 2 15.1 8.3 22 9.3 17 14.1 18.2 21 12 17.8 5.8 21 7 14.1 2 9.3 8.9 8.3 12 2"/></svg>';
+  document.querySelectorAll('.stars').forEach(function (s) { s.innerHTML = STAR.repeat(5); s.setAttribute('aria-label', '5 stars'); });
+  var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+  document.querySelectorAll('.arrow').forEach(function (a) { a.innerHTML = ARROW; });
+
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: .12 });
+  document.querySelectorAll('.rv').forEach(function (el, i) { el.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(el); });
+
+  document.querySelectorAll('.card').forEach(function (c) {
+    c.addEventListener('mousemove', function (e) { var r = c.getBoundingClientRect(); c.style.setProperty('--x', (e.clientX - r.left) + 'px'); c.style.setProperty('--y', (e.clientY - r.top) + 'px'); });
+  });
+
   document.querySelectorAll('.filters button').forEach(function (b) {
     b.addEventListener('click', function () {
       document.querySelectorAll('.filters button').forEach(function (x) { x.classList.remove('on'); });
       b.classList.add('on');
       var f = b.dataset.f;
-      document.querySelectorAll('.work .item').forEach(function (it) {
-        it.classList.toggle('hide', f !== 'all' && it.dataset.c.split(' ').indexOf(f) === -1);
-      });
+      document.querySelectorAll('.bento .w').forEach(function (w) { w.classList.toggle('hide', f !== 'all' && w.dataset.c.split(' ').indexOf(f) === -1); });
     });
   });
+
   var form = document.getElementById('contact-form'), msg = document.getElementById('formmsg');
   form.addEventListener('submit', function (e) {
     e.preventDefault();

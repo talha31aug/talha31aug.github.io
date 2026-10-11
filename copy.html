@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Copy Draft</title>
+<link rel="icon" href="assets/img/logo.svg">
+<style>
+  :root {
+    --bg: #07061a; --card: #12102b; --line: #2a2650; --text: #f5f4ff; --muted: #a9a6c9;
+    --accent: #6d4dff; --green: #14a800; --ok: #22c55e;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) { --bg: #f6f5fb; --card: #ffffff; --line: #e2e0ef; --text: #17152e; --muted: #5d5a7a; }
+  }
+  :root[data-theme="light"] { --bg: #f6f5fb; --card: #ffffff; --line: #e2e0ef; --text: #17152e; --muted: #5d5a7a; }
+  :root[data-theme="dark"] { --bg: #07061a; --card: #12102b; --line: #2a2650; --text: #f5f4ff; --muted: #a9a6c9; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 720px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+  .label { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+  .text { white-space: pre-wrap; word-wrap: break-word; font-size: 15px; max-height: 40vh; overflow: auto; }
+  button, a.btn { display: block; width: 100%; border: 0; border-radius: 12px; padding: 15px; margin-top: 12px;
+                  font: 600 17px/1.2 inherit; font-family: inherit; text-align: center; text-decoration: none; cursor: pointer; }
+  .copy { background: var(--accent); color: #fff; }
+  .copy.done { background: var(--ok); }
+  .small { padding: 11px; font-size: 15px; }
+  a.btn.upwork { background: var(--green); color: #fff; position: sticky; bottom: 12px; }
+  .steps { color: var(--muted); font-size: 14px; padding-left: 18px; margin: 4px 0 16px; }
+  .err { color: #f87171; }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">Draft</h1>
+  <p class="sub">Private copy page. The text lives only in this link, it is never sent to a server.</p>
+  <ol class="steps">
+    <li>Tap <b>Copy proposal</b>.</li>
+    <li>Tap <b>Open apply page on Upwork</b> and paste into the cover letter.</li>
+    <li>Come back here to copy each screening answer.</li>
+  </ol>
+  <div id="out"></div>
+</main>
+<script>
+(function () {
+  var out = document.getElementById("out");
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function copy(text, btn, label) {
+    function done(ok) {
+      btn.textContent = ok ? "Copied" : "Copy failed: long-press the text above";
+      btn.classList.toggle("done", ok);
+      setTimeout(function () { btn.textContent = label; btn.classList.remove("done"); }, 2500);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
+    } else {
+      done(fallbackCopy(text));
+    }
+  }
+
+  function block(label, text, btnLabel, small) {
+    var c = el("div", "card");
+    c.appendChild(el("div", "label", label));
+    c.appendChild(el("div", "text", text));
+    var b = el("button", "copy" + (small ? " small" : ""), btnLabel);
+    b.addEventListener("click", function () { copy(text, b, btnLabel); });
+    c.appendChild(b);
+    out.appendChild(c);
+  }
+
+  async function decode(frag) {
+    var b64 = frag.replace(/-/g, "+").replace(/_/g, "/");
+    while (b64.length % 4) b64 += "=";
+    var bin = atob(b64), bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    var stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+    return JSON.parse(await new Response(stream).text());
+  }
+
+  var m = location.hash.match(/[#&]d=([A-Za-z0-9_-]+)/);
+  if (!m) { out.appendChild(el("p", "err", "No draft in this link.")); return; }
+  if (typeof DecompressionStream === "undefined") {
+    out.appendChild(el("p", "err", "This browser is too old to open the draft. Copy it from Discord instead."));
+    return;
+  }
+  decode(m[1]).then(function (d) {
+    if (d.l) { document.getElementById("title").textContent = d.l; document.title = "Copy Draft"; }
+    block("Proposal", d.t || "", "Copy proposal");
+    if (d.u && /^https:\/\/www\.upwork\.com\//.test(d.u)) {
+      var a = el("a", "btn upwork", "Open apply page on Upwork");
+      a.href = d.u;
+      a.rel = "noopener";
+      out.appendChild(a);
+    }
+    (d.q || []).forEach(function (x, i) {
+      block("Q" + (i + 1) + ": " + (x.q || ""), x.a || "", "Copy answer " + (i + 1), true);
+    });
+  }).catch(function () {
+    out.appendChild(el("p", "err", "This link is damaged. Copy the draft from Discord instead."));
+  });
+})();
+</script>
+</body>
+</html>

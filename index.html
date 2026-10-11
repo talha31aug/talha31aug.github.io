@@ -10,7 +10,7 @@
   <meta property="og:image" content="https://talha31aug.github.io/assets/img/og-image.jpg">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#07061a">
-  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@
     nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:60;width:min(1200px,100% - 24px);
       display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 12px 10px 22px;border-radius:999px;
       background:rgba(14,12,38,.6);backdrop-filter:blur(18px) saturate(140%);border:1px solid var(--line)}
-    .logo{font-family:Sora;font-weight:800;font-size:19px}.logo i{font-style:normal;color:var(--a1)}
+    .logo{display:flex;align-items:center;gap:10px;font-family:Sora;font-weight:700;font-size:17px}.logo img{border-radius:10px;box-shadow:0 6px 18px rgba(109,77,255,.45)}@media(max-width:420px){.logo span{display:none}}
     .menu{display:flex;gap:26px;font-size:14.5px;color:var(--muted)}.menu a:hover{color:var(--text)}
     .navcta{display:flex;gap:8px}
     @media(max-width:900px){.menu{display:none}}
@@ -90,8 +90,8 @@
     @keyframes scroll{to{transform:translateX(-50%)}}
 
     /* sections */
-    section{padding:120px 0}
-    .head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap;margin-bottom:54px}
+    section{padding:84px 0}@media(max-width:620px){section{padding:56px 0}}
+    .head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
     .kicker{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--a1)}
     h2{font-size:clamp(34px,4.4vw,56px);line-height:1.05;font-weight:800;margin-top:12px;max-width:760px}
     .head p{color:var(--muted);max-width:420px}
@@ -127,7 +127,7 @@
     .w:hover .arrow{opacity:1;transform:none}.arrow svg{width:18px;height:18px}
     .hide{display:none!important}
     @media(max-width:960px){.bento{grid-template-columns:repeat(2,1fr)}.w,.w.wide{grid-column:span 1}.w.big{grid-column:span 2;grid-row:auto}}
-    @media(max-width:620px){.bento{grid-template-columns:1fr}.w,.w.wide,.w.big{grid-column:span 1}.w.big h3{font-size:22px}}
+    @media(max-width:620px){.bento{grid-template-columns:1fr}.w,.w.wide,.w.big{grid-column:span 1}.w.big h3{font-size:22px}.w.big img{height:auto}.w.big .ov{position:static;padding:20px 20px 22px;background:var(--bg2)}.w.big p{font-size:15px}.hero{padding-top:110px;min-height:auto}}
 
     /* process */
     .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
@@ -194,7 +194,7 @@
 <div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="gridbg"></div><div class="noise"></div></div>
 
 <nav>
-  <a class="logo" href="#top">Talha<i>.</i></a>
+  <a class="logo" href="#top"><img src="assets/img/logo.svg" alt="" width="36" height="36"><span>Talha Zahid</span></a>
   <div class="menu"><a href="#services">Services</a><a href="#work">Work</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#about">About</a></div>
   <div class="navcta">
     <a class="btn ghost sm" href="https://pharossolutions.org/" target="_blank" rel="noopener">Pharos Solutions</a>
@@ -207,7 +207,7 @@
     <div>
       <div class="pill rv"><b>Available</b> Taking new projects this month</div>
       <h1 class="rv">I build the features a theme <span class="grad">alone can't do.</span></h1>
-      <p class="sub rv">Senior Shopify and WordPress developer. Custom Shopify apps, product builders, WordPress plugins and Laravel back ends for brands, startups and agencies.</p>
+      <p class="sub rv">Senior Shopify and WordPress developer. Custom Shopify apps, product builders, WordPress plugins, React front ends and Laravel or Node.js back ends for brands, startups and agencies.</p>
       <div class="cta rv">
         <a class="btn primary" href="#contact">Start a project <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
         <a class="btn ghost" href="#work">View my work</a>
@@ -230,8 +230,8 @@
 </header>
 
 <div class="marquee"><div class="track">
-  <span>Shopify Plus</span><span>Liquid</span><span>Laravel</span><span>WordPress</span><span>WooCommerce</span><span>React</span><span>Node.js</span><span>GoHighLevel</span><span>Stripe</span><span>REST APIs</span><span>MySQL</span><span>Elementor</span><span>Bricks</span>
-  <span>Shopify Plus</span><span>Liquid</span><span>Laravel</span><span>WordPress</span><span>WooCommerce</span><span>React</span><span>Node.js</span><span>GoHighLevel</span><span>Stripe</span><span>REST APIs</span><span>MySQL</span><span>Elementor</span><span>Bricks</span>
+  <span>React</span><span>Node.js</span><span>Shopify Plus</span><span>Liquid</span><span>Laravel</span><span>WordPress</span><span>WooCommerce</span><span>React</span><span>Node.js</span><span>GoHighLevel</span><span>Stripe</span><span>REST APIs</span><span>MySQL</span><span>Elementor</span><span>Bricks</span>
+  <span>React</span><span>Node.js</span><span>Shopify Plus</span><span>Liquid</span><span>Laravel</span><span>WordPress</span><span>WooCommerce</span><span>React</span><span>Node.js</span><span>GoHighLevel</span><span>Stripe</span><span>REST APIs</span><span>MySQL</span><span>Elementor</span><span>Bricks</span>
 </div></div>
 
 <section id="services">
@@ -248,7 +248,7 @@
       <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
         <h3>WordPress and WooCommerce</h3><p>Custom plugins and themes with Elementor or Bricks, WooCommerce, API and CRM integrations.</p></div>
       <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg></div>
-        <h3>Laravel web apps</h3><p>Dashboards, portals and REST APIs with role-based access, payments and integrations, built from scratch.</p></div>
+        <h3>React, Node.js and Laravel apps</h3><p>Full stack web apps: React front ends with Laravel or Node.js back ends, dashboards, portals and REST APIs.</p></div>
       <div class="card rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg></div>
         <h3>GoHighLevel</h3><p>Funnels, automations and CRM pipelines, plus migrations from Kajabi and WordPress that keep forms working.</p></div>
     </div>
@@ -355,7 +355,7 @@
         <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
         <div class="row"><input name="name" placeholder="Your name" required><input name="email" type="email" placeholder="Your email" required></div>
         <div class="row">
-          <select name="service"><option>Custom Shopify app or B2B portal</option><option>Product builder</option><option>Shopify store or theme</option><option>WordPress or WooCommerce</option><option>Laravel web app</option><option>GoHighLevel</option><option>Something else</option></select>
+          <select name="service"><option>Custom Shopify app or B2B portal</option><option>Product builder</option><option>Shopify store or theme</option><option>WordPress or WooCommerce</option><option>React, Node.js or Laravel web app</option><option>GoHighLevel</option><option>Something else</option></select>
           <select name="budget"><option>Budget: not sure yet</option><option>Under $500</option><option>$500 to $2,000</option><option>$2,000 to $5,000</option><option>$5,000+</option></select>
         </div>
         <input name="website" placeholder="Store or website link (optional)">

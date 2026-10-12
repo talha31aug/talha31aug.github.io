@@ -113,9 +113,14 @@
   }
   decode(m[1]).then(function (d) {
     if (d.l) { document.getElementById("title").textContent = d.l; document.title = "Copy Draft"; }
-    block("Proposal", d.t || "", "Copy proposal");
+    var kind = d.b ? "reply" : "proposal";
+    if (d.b) {
+      document.querySelector(".steps").innerHTML = "<li>Tap <b>Copy reply</b>.</li><li>Tap <b>" +
+        d.b.replace(/[<>&]/g, "") + "</b> and paste it into the message box.</li>";
+    }
+    block(kind === "reply" ? "Reply" : "Proposal", d.t || "", kind === "reply" ? "Copy reply" : "Copy proposal");
     if (d.u && /^https:\/\/www\.upwork\.com\//.test(d.u)) {
-      var a = el("a", "btn upwork", "Open apply page on Upwork");
+      var a = el("a", "btn upwork", d.b || "Open apply page on Upwork");
       a.href = d.u;
       a.rel = "noopener";
       out.appendChild(a);

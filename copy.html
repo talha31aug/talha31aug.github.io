@@ -114,21 +114,25 @@
   decode(m[1]).then(function (d) {
     if (d.l) { document.getElementById("title").textContent = d.l; document.title = "Copy Draft"; }
     var linkedin = /^https:\/\/(www\.)?linkedin\.com\//.test(d.u || "");
-    var kind = linkedin ? "message" : (d.b ? "reply" : "proposal");
+    var kind = d.k || (linkedin ? "message" : (d.b ? "reply" : "proposal"));
     var word = kind.charAt(0).toUpperCase() + kind.slice(1);
-    if (d.b) {
+    if (d.k === "cover letter") {  // job application: cover letter plus one copy button per form field
+      document.querySelector(".steps").innerHTML = "<li>Tap <b>" + (d.b || "Open job").replace(/[<>&]/g, "") +
+        "</b> and start the application.</li><li>Copy each answer below into the matching field.</li>" +
+        "<li>Upload the CV PDF from Discord.</li>";
+    } else if (d.b) {
       document.querySelector(".steps").innerHTML = "<li>Tap <b>Copy " + kind + "</b>.</li><li>Tap <b>" +
         d.b.replace(/[<>&]/g, "") + "</b>, open Message and paste it.</li>";
     }
     block(word, d.t || "", "Copy " + kind);
-    if (d.u && (/^https:\/\/www\.upwork\.com\//.test(d.u) || linkedin)) {
+    if (d.u && (/^https:\/\/www\.upwork\.com\//.test(d.u) || linkedin || (d.k && /^https:\/\//.test(d.u)))) {
       var a = el("a", "btn upwork", d.b || "Open apply page on Upwork");
       a.href = d.u;
       a.rel = "noopener";
       out.appendChild(a);
     }
     (d.q || []).forEach(function (x, i) {
-      block("Q" + (i + 1) + ": " + (x.q || ""), x.a || "", "Copy answer " + (i + 1), true);
+      block(d.k ? (x.q || "") : "Q" + (i + 1) + ": " + (x.q || ""), x.a || "", d.k ? "Copy" : "Copy answer " + (i + 1), true);
     });
   }).catch(function () {
     out.appendChild(el("p", "err", "This link is damaged. Copy the draft from Discord instead."));

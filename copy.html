@@ -113,13 +113,15 @@
   }
   decode(m[1]).then(function (d) {
     if (d.l) { document.getElementById("title").textContent = d.l; document.title = "Copy Draft"; }
-    var kind = d.b ? "reply" : "proposal";
+    var linkedin = /^https:\/\/(www\.)?linkedin\.com\//.test(d.u || "");
+    var kind = linkedin ? "message" : (d.b ? "reply" : "proposal");
+    var word = kind.charAt(0).toUpperCase() + kind.slice(1);
     if (d.b) {
-      document.querySelector(".steps").innerHTML = "<li>Tap <b>Copy reply</b>.</li><li>Tap <b>" +
-        d.b.replace(/[<>&]/g, "") + "</b> and paste it into the message box.</li>";
+      document.querySelector(".steps").innerHTML = "<li>Tap <b>Copy " + kind + "</b>.</li><li>Tap <b>" +
+        d.b.replace(/[<>&]/g, "") + "</b>, open Message and paste it.</li>";
     }
-    block(kind === "reply" ? "Reply" : "Proposal", d.t || "", kind === "reply" ? "Copy reply" : "Copy proposal");
-    if (d.u && /^https:\/\/www\.upwork\.com\//.test(d.u)) {
+    block(word, d.t || "", "Copy " + kind);
+    if (d.u && (/^https:\/\/www\.upwork\.com\//.test(d.u) || linkedin)) {
       var a = el("a", "btn upwork", d.b || "Open apply page on Upwork");
       a.href = d.u;
       a.rel = "noopener";

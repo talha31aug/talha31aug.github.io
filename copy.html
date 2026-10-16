@@ -79,18 +79,11 @@
       btn.classList.toggle("done", ok);
       setTimeout(function () { btn.textContent = label; btn.classList.remove("done"); }, 2500);
     }
-    // LinkedIn posts: LinkedIn's editor drops empty lines from plain text, so copy rich text too (one paragraph per line,
-    // an empty paragraph for each blank line); apps that only take plain text still get the plain version
-    if (window.richCopy && navigator.clipboard && window.isSecureContext && window.ClipboardItem) {
-      var esc = function (t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
-      var html = text.split(String.fromCharCode(10)).map(function (l) { return l.trim() ? "<p>" + esc(l) + "</p>" : "<p><br></p>"; }).join("");
-      navigator.clipboard.write([new ClipboardItem({
-        "text/html": new Blob([html], { type: "text/html" }),
-        "text/plain": new Blob([text], { type: "text/plain" })
-      })]).then(function () { done(true); }, function () {
-        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
-      });
-      return;
+    // LinkedIn posts: LinkedIn's editor drops empty lines from pasted text (rich text was tried and is merged into one
+    // block), so each blank line gets one invisible braille blank (U+2800), which LinkedIn keeps as a real empty line
+    if (window.richCopy) {
+      var NL = String.fromCharCode(10), BLANK = String.fromCharCode(0x2800);
+      text = text.split(NL).map(function (l) { return l.trim() ? l : BLANK; }).join(NL);
     }
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });

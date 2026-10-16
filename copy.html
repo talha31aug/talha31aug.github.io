@@ -79,6 +79,19 @@
       btn.classList.toggle("done", ok);
       setTimeout(function () { btn.textContent = label; btn.classList.remove("done"); }, 2500);
     }
+    // LinkedIn posts: LinkedIn's editor drops empty lines from plain text, so copy rich text too (one paragraph per line,
+    // an empty paragraph for each blank line); apps that only take plain text still get the plain version
+    if (window.richCopy && navigator.clipboard && window.isSecureContext && window.ClipboardItem) {
+      var esc = function (t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
+      var html = text.split(String.fromCharCode(10)).map(function (l) { return l.trim() ? "<p>" + esc(l) + "</p>" : "<p><br></p>"; }).join("");
+      navigator.clipboard.write([new ClipboardItem({
+        "text/html": new Blob([html], { type: "text/html" }),
+        "text/plain": new Blob([text], { type: "text/plain" })
+      })]).then(function () { done(true); }, function () {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
+      });
+      return;
+    }
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(fallbackCopy(text)); });
     } else {
@@ -115,6 +128,7 @@
     if (d.l) { document.getElementById("title").textContent = d.l; document.title = "Copy Draft"; }
     var linkedin = /^https:\/\/(www\.)?linkedin\.com\//.test(d.u || "");
     var kind = d.k || (linkedin ? "message" : (d.b ? "reply" : "proposal"));
+    window.richCopy = (d.k === "post");
     var word = kind.charAt(0).toUpperCase() + kind.slice(1);
     if (d.k === "cover letter") {  // job application: cover letter plus one copy button per form field
       document.querySelector(".steps").innerHTML = "<li>Tap <b>" + (d.b || "Open job").replace(/[<>&]/g, "") +
